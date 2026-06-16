@@ -5,6 +5,11 @@ from chain import load_qa_chain
 load_dotenv()
 import os
 from ingest import build_vectorstore
+# DEBUG - remove after fixing
+if hasattr(st, 'secrets') and 'GROQ_API_KEY' in st.secrets:
+    st.write("Key found in secrets, length:", len(st.secrets['GROQ_API_KEY']))
+else:
+    st.write("Key NOT found in secrets")
 
 if not os.path.exists("vectorstore/index.faiss"):
     with st.spinner("Building knowledge base from bank reports — this takes 2-3 minutes on first run..."):
