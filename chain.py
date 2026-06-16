@@ -1,12 +1,17 @@
+import os
+import streamlit as st
 from dotenv import load_dotenv
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_groq import ChatGroq
 from langchain_classic.chains import ConversationalRetrievalChain
 from langchain_classic.memory import ConversationBufferMemory
-from langchain_classic.prompts import PromptTemplate, SystemMessagePromptTemplate, HumanMessagePromptTemplate, ChatPromptTemplate
+from langchain_classic.prompts import SystemMessagePromptTemplate, HumanMessagePromptTemplate, ChatPromptTemplate
 
 load_dotenv()
+
+if hasattr(st, 'secrets') and 'GROQ_API_KEY' in st.secrets:
+    os.environ['GROQ_API_KEY'] = st.secrets['GROQ_API_KEY']
 
 
 def load_qa_chain():
