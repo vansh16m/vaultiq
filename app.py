@@ -3,9 +3,15 @@ from dotenv import load_dotenv
 from chain import load_qa_chain
 
 load_dotenv()
+import os
+from ingest import build_vectorstore
+
+if not os.path.exists("vectorstore/index.faiss"):
+    with st.spinner("Building knowledge base from bank reports — this takes 2-3 minutes on first run..."):
+        build_vectorstore()
 
 st.set_page_config(
-    page_title="BankLens AI",
+    page_title="VaultIQ",
     page_icon="🏦",
     layout="wide"
 )
@@ -155,7 +161,7 @@ if "sidebar_open" not in st.session_state:
 
 # ── Sidebar ───────────────────────────────────────────────
 with st.sidebar:
-    st.markdown("### 🏦 BankLens AI")
+    st.markdown("### 🏦 VaultIQ")
 
     # New conversation
     st.markdown('<div class="new-chat">', unsafe_allow_html=True)
@@ -211,7 +217,7 @@ with st.sidebar:
 
 # ── Load chain ────────────────────────────────────────────
 if "chain" not in st.session_state:
-    with st.spinner("Loading BankLens..."):
+    with st.spinner("Loading VaultIQ..."):
         st.session_state.chain = load_qa_chain()
 
 # ── Welcome screen ────────────────────────────────────────
@@ -274,6 +280,6 @@ if prompt := st.chat_input("Ask Anything"):
 # ── Bottom disclaimer — fixed like Claude ─────────────────
 st.markdown("""
 <div class="disclaimer-bar">
-    BankLens AI · Answers grounded in source documents · Not financial advice
+    VaultIQ · Answers grounded in source documents · Not financial advice
 </div>
 """, unsafe_allow_html=True)
