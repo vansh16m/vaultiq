@@ -10,9 +10,10 @@ from langchain_classic.prompts import SystemMessagePromptTemplate, HumanMessageP
 
 load_dotenv()
 
-if hasattr(st, 'secrets') and 'GROQ_API_KEY' in st.secrets:
-    os.environ['GROQ_API_KEY'] = st.secrets['GROQ_API_KEY']
-
+def get_groq_key():
+    if hasattr(st, 'secrets') and 'GROQ_API_KEY' in st.secrets:
+        return st.secrets['GROQ_API_KEY']
+    return os.getenv('GROQ_API_KEY')
 
 def load_qa_chain():
     embeddings = HuggingFaceEmbeddings(
@@ -31,7 +32,8 @@ def load_qa_chain():
 
     llm = ChatGroq(
         model="llama-3.3-70b-versatile",
-        temperature=0
+        temperature=0,
+        api_key=get_groq_key()
     )
 
     system_template = """You are a world-class senior financial analyst specializing in Canadian banking.
